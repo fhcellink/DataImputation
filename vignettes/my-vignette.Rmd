@@ -1,0 +1,76 @@
+---
+title: "Lab 4"
+author: "Fahad Hameed and Ugurcan Lacin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Implementation of Lab 4 includes following tasks:
+
+- Creating package on Github and Travis.
+- Implementation of linreg function which include different linear algebra function.
+- Implementation of functions using QR decomposition.
+- Implementing methods for class like print() etc.
+- Ploting graph
+- Testing package through Unit tests
+- Creating a theme for Linkoping University
+
+
+- Never uses retina figures
+- Has a smaller default figure size
+- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+
+## linreg function Implementation
+
+Regrssions coefficients:
+$$\beta = (X^T X)^-1 X^Ty$$
+
+The Fitted values:
+$$\ \hat y = X \beta$$
+
+The residuals:
+$$\ \hat e = y - \hat y = y - X\beta$$
+
+The degrees of freedom:
+$$~dy = n-p $$
+
+The residual variance:
+$$ \sigma^2 = e^Te/~df $$
+
+The variance of the regression coefficients:
+$$ Var(\beta) = \sigma^2/(X^T X)^1 $$
+
+The t-values for each coefficients:
+$$ t~\beta~ = \beta/\sqrt Var(hat \beta) $$
+
+## Ploting Data using Graph
+
+```{r}
+plot(Petal.Length~Species, data=iris)
+```
+
+## Implementation of methods of class
+
+The package includes following functions implementation:
+1. print()
+  
+    The print() prints the formula and the coefficients of the estimated linear regression model.
+2. plot()
+ 
+    The plot() function uses ggplot2 to plot residuals vs. fitted values and the scale location.
+3. resid()
+  
+    The resid() function returns a vector of the residuals of the estmated linear regression model.
+4. pred()
+   
+    The pred() function returns a vector of the predicted values of the estimated linear regression model.
+5. coef()
+  
+    The coef() function returns the coefficients of the estimated linear regression model.
+6. summary()
+  
+    The summary() function returns the coefficients, standard errors, t-values and p-values of the estimated linear regression model.

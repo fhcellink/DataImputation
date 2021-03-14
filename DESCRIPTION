@@ -1,0 +1,18 @@
+Package: Lab7
+Type: Package
+Title: Lab7
+Version: 1.0.0
+Date: 2017-09-11
+Author: Ugurcan Lacin, Fahad Hameed
+Maintainer: Any issues, contact: <ugurcanlacin@gmail.com>
+Description: Lab7 implementation.
+License: GPL-3
+Depends: R (>= 2.10)
+URL: https://github.com/ugurcanlacin/Lab7
+LazyData: true
+RoxygenNote: 6.0.1
+Imports: methods
+Suggests: testthat, ggplot2,nycflights13,dplyr,caret,mlbench,leaps,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

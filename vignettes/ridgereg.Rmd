@@ -1,0 +1,128 @@
+---
+title: "Brute Force Knapsack"
+author: "Fahad Hameed Ugurcan Lacin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+In this package we are implementing a package which is for Lab 7.
+
+First, we import necessary libraries and split our data set.
+
+```{r}
+library(caret)
+library(mlbench)
+library(Lab7)
+data("BostonHousing")
+set.seed(22)
+boston <- BostonHousing[,-4]
+colnames(boston[-10])
+trainIndex <- createDataPartition(boston$tax, p = .7, 
+                                  list = FALSE, 
+                                  times = 1)
+
+train <- boston[ trainIndex,]
+test  <- boston[-trainIndex,]
+```
+
+Here We see lm method result. Unfortunately, There are unsignificant results. We should filter them by applying leap forward selection.
+
+```{r}
+resultLM <- train(tax ~., data = train, method='lm')
+summary(resultLM)
+```
+
+
+Here we see leap forward result.
+```{r}
+resultLeapForward <- train(tax ~., data = train, method='leapForward')
+resultLeapForward
+summary(resultLeapForward)
+```
+
+According to results, zn, indus, rad and medv are recommended features to use. So, we use these features for our new lm model.
+
+```{r}
+improvedLM <- train(tax ~ zn + indus + rad + medv, data = train, method='lm')
+summary(improvedLM)
+```
+
+## Evaluation
+
+As seen, we have better results. Residual Standard Error is lower than first model and Adjusted R-squared is higher than first model. Thus, we improved our model by using leap forward selection. It can be seen below.
+
+```{r}
+resamps <- resamples(list(LinReg = resultLM, LinRegForw = improvedLM))
+summary(resamps)
+```
+
+## Custom Model
+
+```{r}
+Ridgereg_model <- list(
+    type = c("Regression"),
+    library = "Lab7",
+    loop = NULL,
+    prob = NULL)
+
+Ridgereg_model$parameters <- data.frame(parameter = "lambda",
+                                        class = "numeric",
+                                        label = "lambda")
+
+Ridgereg_model$grid <- function (x, y, len = NULL, search = "grid"){
+    data.frame(lambda = seq(0,2,by=0.25))
+}
+
+Ridgereg_model$fit <- function (x, y, wts, param, lev, last, classProbs, ...){
+    dat <- if (is.data.frame(x))
+        x
+    else
+        as.data.frame(x)
+    dat$.outcome <- y
+    
+    output <-
+        ridgereg$new(.outcome ~ ., data = dat, lambda = param$lambda, ...)
+    
+    output
+}
+
+
+Ridgereg_model$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL){
+    if (!is.data.frame(newdata))
+        newdata <- as.data.frame(newdata)
+    modelFit$predict(newdata)
+}
+```
+
+Now, set up the 10-fold cross-validation and train the ridgereg() model:
+
+```{r}
+set.seed(22)
+ctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 10)
+ridgereg_fit <- train(tax ~ ., data=train, method=Ridgereg_model, trControl=ctrl)
+ridgereg_fit
+```
+
+As a result, We see that the best $\lambda$ value is 0.
+
+## Evaluation
+
+```{r}
+# "Linear Regression Model"
+Test_lm <- predict(resultLM, test)
+postResample(Test_lm,test$tax)
+
+# "Linear Regression Model with forward selection"
+Test_lmf <- predict(improvedLM, test)
+postResample(Test_lmf,test$tax)
+
+# "Ridgereg Model"
+Test_ridge <- predict(ridgereg_fit, test)
+postResample(Test_ridge,test$tax)
+```
+
+According to comparison, the first model is best one. Even though we did some forward selection and our custom model implementation, we see different result with our test data.
