@@ -1,18 +1,16 @@
-Package: Lab7
+Package: FCS-TwoFold
 Type: Package
-Title: Lab7
+Title: FCS-TwoFold
 Version: 1.0.0
-Date: 2017-09-11
-Author: Ugurcan Lacin, Fahad Hameed
-Maintainer: Any issues, contact: <ugurcanlacin@gmail.com>
-Description: Lab7 implementation.
+Date: 2021-03-14
+Author: Fahad Hameed
+Maintainer: Any issues, contact: <fahadhameed3h@hotmail.com>
+Description: FCS-TwoFoldimplementation.
 License: GPL-3
 Depends: R (>= 2.10)
-URL: https://github.com/ugurcanlacin/Lab7
+URL: https://github.com/fahadhameed3h
 LazyData: true
 RoxygenNote: 6.0.1
 Imports: methods
-Suggests: testthat, ggplot2,nycflights13,dplyr,caret,mlbench,leaps,
-    knitr,
-    rmarkdown
+Suggests: mice,longitudinal
 VignetteBuilder: knitr

@@ -1,3 +1,13 @@
+#' @title FCS-Twofold
+#' @description An R package for data imputation
+#' @field formula Formula
+#' @field data A data frame
+#' @importFrom methods new
+#' @examples
+#' data(longitudinal)
+#' TwoFCS(originaldata,smtype,smformula,method,predictorMatrix=NULL,m=5,numit=10,rjlimit=1000,noisy=FALSE,errorProneMatrix=NULL)
+#' TwoFold(originaldata,smtype,smformula,method,predictorMatrix=NULL,m=5,numit=10,rjlimit=1000,noisy=FALSE,errorProneMatrix=NULL,...)
+
 TwoFCS <- function(originaldata,smtype,smformula,method,predictorMatrix=NULL,m=5,numit=10,rjlimit=1000,noisy=FALSE,errorProneMatrix=NULL) {
   TwoFold(originaldata,smtype,smformula,method,predictorMatrix,m,numit,rjlimit,noisy,errorProneMatrix=errorProneMatrix)
 }
